@@ -22,20 +22,10 @@ const storyblokApi = getStoryblokApi();
     - subject
         "filter_query[onderwerp][in]": term
 */
-async function getSearchData(term, queryType) {
+async function getSearchData(id) {
     let res;
     try {
-        switch (queryType) {
-            case "term":
-                res = await storyblokApi.get("cdn/stories", { search_term:term, starts_with:"artikel", version:"published" });
-                break;
-            case "subject":
-                res = await storyblokApi.get("cdn/stories", { "filter_query[onderwerp][in]":term, starts_with:"artikel", version:"published" });
-                break;
-            default:
-                res = await storyblokApi.get("cdn/stories", { starts_with:"artikel", version:"published" });
-                break;
-        }
+        res = await storyblokApi.get("cdn/stories/" + id, { version:"published" });
         // console.log("SUCCESS!!!" + JSON.stringify(res))
     }
     catch(error) {
@@ -44,22 +34,21 @@ async function getSearchData(term, queryType) {
         res = {"data":{"story":{"content":"not found","title":"not found","description":"not found"}}}
     }
     return {
-        stories:res.data.stories
+        story:res.data.story
     }
 }
 
 export default async function handler(req, res) {
     // read query
-    let query = req.query.q || "";
-    let queryType = req.query.type || "all"
+    let { id } = req.query;
 
-    // clean term
-    var chars = 'a-zA-Z0-9_.~:\\-\\s';
-    let term = validator.whitelist(query, chars)
+    // clean id
+    var chars = '0-9';
+    let cleanId = validator.whitelist(id, chars)
 
     // go
-    // console.log("Go", term, queryType)
-    let data = await getSearchData(term, queryType);
+    // console.log("Go", cleanId)
+    let data = await getSearchData(cleanId);
 
     res.status(200).json(data)
 }
