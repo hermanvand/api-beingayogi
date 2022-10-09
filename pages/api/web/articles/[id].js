@@ -22,10 +22,16 @@ const storyblokApi = getStoryblokApi();
     - subject
         "filter_query[onderwerp][in]": term
 */
-async function getSearchData(id) {
+async function getSearchData(id, params) {
+
+    params = params || {};
+    params.version = "published";
+
+    //console.log("PARAMS" + JSON.stringify(params))
+
     let res;
     try {
-        res = await storyblokApi.get("cdn/stories/" + id, { version:"published" });
+        res = await storyblokApi.get("cdn/stories/" + id, params );
         // console.log("SUCCESS!!!" + JSON.stringify(res))
     }
     catch(error) {
@@ -39,8 +45,16 @@ async function getSearchData(id) {
 }
 
 export default async function handler(req, res) {
+
+    //console.log("REQ" + JSON.stringify(req.query))
+
     // read query
-    let { id } = req.query;
+    let { id, resolve_relations } = req.query;
+    let params = {};
+
+    if (resolve_relations) {
+        params.resolve_relations = resolve_relations;
+    }
 
     // clean id
     var chars = '0-9';
@@ -48,7 +62,7 @@ export default async function handler(req, res) {
 
     // go
     // console.log("Go", cleanId)
-    let data = await getSearchData(cleanId);
+    let data = await getSearchData(cleanId, params);
 
     res.status(200).json(data)
 }
