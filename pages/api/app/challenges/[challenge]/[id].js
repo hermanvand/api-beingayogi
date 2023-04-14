@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { getSearchDataById } from '../../../../lib/storyblok';
+import { getSearchDataById } from '../../../../../lib/storyblok';
 
 export default async function handler(req, res) {
 
