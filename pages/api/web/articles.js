@@ -1,24 +1,25 @@
 import validator from 'validator';
-import { getSearchDataByQuery } from '../../../lib/storyblok';
-
-const space = "artikel/";
+import { getStoriesByQuery } from '../../../lib/storyblok';
 
 /* input params
 - q [string]
-- type [term|subject]
 */
 export default async function handler(req, res) {
     // read query
     let query = req.query.q || "";
-    let queryType = req.query.type || "all"
 
     // clean term
     var chars = 'a-zA-Z0-9_.~:\\-\\s';
     let term = validator.whitelist(query, chars)
 
+    // set params
+    let params = {};
+    params.starts_with = "artikel/";
+    params.search_term = term;
+
     // go
-    // console.log("Go", term, queryType)
-    let data = await getSearchDataByQuery(space, term, queryType);
+    // console.log("Go", params)
+    let data = await getStoriesByQuery(params);
 
     res.status(200).json(data)
 }

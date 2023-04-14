@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { getSearchDataById } from '../../../../lib/storyblok';
+import { getStoryById } from '../../../../lib/storyblok';
 
 export default async function handler(req, res) {
 
@@ -18,8 +18,8 @@ export default async function handler(req, res) {
     let cleanId = validator.whitelist(id, chars)
 
     // go
-    // console.log("Go", cleanId)
-    let data = await getSearchDataById(cleanId, params);
+    // console.log("Go", cleanId, params)
+    let data = await getStoryById(cleanId, params);
 
     res.status(200).json(data)
 }
