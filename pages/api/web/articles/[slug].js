@@ -16,7 +16,11 @@ export default async function handler(req, res) {
     }
 
     // clean slug
-    var chars = 'a-zA-Z0-9_.~:\\-\\s\/';
+    // translate a--b--c to a/b/c
+    slug = slug.replace(/\-\-/g, "/")
+    // rfc 3986: unreserved chars = ALPHA / DIGIT / "-" / "." / "_" / "~"
+    // add "/" because it is the path in de slug
+    var chars = 'a-zA-Z0-9\\-._~\\/';
     let cleanSlug = validator.whitelist(slug, chars)
 
     // go
