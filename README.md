@@ -5,9 +5,9 @@ api.beingayogi.org
 
 this api exposes
 - articles 
-- articles/{id}
+- articles/{slug}
 - subjects
 - subjects/{subject}
 - challenges
 - challenges/{challenge}
-- challenges/{challenge}/{id}
+- challenges/{challenge}/{slug}

@@ -2,6 +2,10 @@ import validator from 'validator';
 import { getStoriesByQuery } from '../../../../lib/storyblok';
 
 export default async function handler(req, res) {
+
+    let status = 200;
+    let data = {};
+    
     // read query
     let { challenge } = req.query;
 
@@ -16,7 +20,15 @@ export default async function handler(req, res) {
 
     // go
     // console.log("Go", params)
-    let data = await getStoriesByQuery(params);
+    try {
+        data = await getStoriesByQuery(params);
+    } catch (error) {
+        status = 404;
+        data.name = error.name;
+        data.message = error.message;
+        //console.log("ERROR: " + error.message)
+    }
 
-    res.status(200).json(data)
+    res.status(status).json(data)
+    
 }
