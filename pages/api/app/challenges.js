@@ -1,4 +1,5 @@
 //import { getDatasourceEntries } from '../../../lib/storyblok';
+import validator from 'validator';
 import { getStoriesByQuery } from '../../../lib/storyblok';
 
 export default async function handler(req, res) {
