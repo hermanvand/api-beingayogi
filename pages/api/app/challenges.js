@@ -6,11 +6,21 @@ export default async function handler(req, res) {
     let status = 200;
     let data = {};
 
+    // read query
+    let query = req.query.uuids || "";
+
+    // clean uuids, only allow uuid's, seperated by ','
+    var chars = 'a-fA-F0-9_,\\-';
+    let uuids = validator.whitelist(query, chars)
+
     // set params
     let params = {};
     //params.datasource = "challenges"
     params.starts_with = "practice/challenges/";
     params.is_startpage = 1;
+    if (uuids != "") {
+        params.by_uuids = uuids;
+    }
 
     // go
     // console.log("Go", params)
