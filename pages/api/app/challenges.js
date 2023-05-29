@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     params.starts_with = "practice/challenges/";
     params.is_startpage = 1;
     if (uuids != "") {
-        params.by_uuids = uuids;
+        params.by_uuids_ordered = uuids;
     }
 
     // go
