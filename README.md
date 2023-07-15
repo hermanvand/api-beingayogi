@@ -15,3 +15,5 @@ this api exposes
 - challenges?uuids=list_of_uuids
 - challenges/{challenge}
 - challenges/{challenge}/{slug}
+
+- teaser
